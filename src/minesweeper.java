@@ -58,6 +58,7 @@ public class minesweeper {
 		int rangeY = input.nextInt();
 		int[][] map = new int[rangeX][rangeY];
 		boolean[][] cover = new boolean[rangeX][rangeY];
+		
 		for(int i=0; i<map.length;i++)
 		{
 			for(int j=0; j<map[0].length;j++)
@@ -67,7 +68,7 @@ public class minesweeper {
 		}
 		
 		int countMines = rangeX*rangeY/4;
-		
+		System.out.println("There are "+countMines+" mines");
 		//-2 = border
 		//-1 = mine
 		//0 = empty
