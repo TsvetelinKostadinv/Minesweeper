@@ -3,24 +3,28 @@ import java.util.Scanner;
 
 public class minesweeper {
 	
-	public static void showMap(int[][] map)
+	public static void showMap(boolean[][] cover, int[][] map)
 	{
 		for(int i=0; i<map.length; i++)
 		{
 			for(int j=0; j<map[0].length; j++)
 			{
-				if(map[i][j]==-1)
+				if(map[i][j]==-2)
 				{
-					System.out.print("X");
-					
-				}else if(map[i][j]==-2)
+					System.out.print("##");
+				}else if(!cover[i][j])
 				{
-					System.out.print("#");
-				}else
-				{
-					System.out.print(minesAround(i, j, map));
+					if(map[i][j]==-1)
+					{
+						System.out.print("XX");
+						
+					}else
+					{
+						System.out.print(minesAround(i, j, map)+minesAround(i, j, map));
+					}
+				}else{
+					System.out.print("[]");
 				}
-				
 			}
 			System.out.println();
 		}
@@ -53,12 +57,22 @@ public class minesweeper {
 		System.out.print("How high should it be:");
 		int rangeY = input.nextInt();
 		int[][] map = new int[rangeX][rangeY];
+		boolean[][] cover = new boolean[rangeX][rangeY];
+		for(int i=0; i<map.length;i++)
+		{
+			for(int j=0; j<map[0].length;j++)
+			{
+				cover[i][j] = true;
+			}
+		}
 		
 		int countMines = rangeX*rangeY/4;
+		
 		//-2 = border
 		//-1 = mine
 		//0 = empty
 		//number....
+		
 		for(int i=0; i<map.length;i++)
 		{
 			map[i][0] = -2;
@@ -70,6 +84,7 @@ public class minesweeper {
 			map[0][i] = -2;
 			map[map.length-1][i] = -2;
 		}
+		
 		for(int i=1; i<map.length-1; i++)
 		{
 			for(int j=1; j<map[0].length-1; j++)
@@ -88,7 +103,8 @@ public class minesweeper {
 			}
 			map[randX][randY] = -1;
 		}
-		showMap(map);
+		
+		showMap(cover, map);
 		
 	}
 }
