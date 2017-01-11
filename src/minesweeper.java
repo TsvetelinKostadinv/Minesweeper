@@ -155,7 +155,7 @@ public class minesweeper {
 			int y=input.nextInt();
 			System.out.print("What colomn is the cell in?");
 			int x=input.nextInt();
-			System.out.println("This size includes the borders which are 1 cell big");
+			System.out.println("This size includes the borders which are 1 cell on each side");
 			System.out.println("What to do with it?");
 			System.out.println("[1]Open");
 			System.out.println("[2]Mark");
@@ -167,6 +167,7 @@ public class minesweeper {
 					System.out.println("You can't open a border");
 				}else if(map[x][y]==-1)
 				{
+					cover[x][y]=1;
 					System.out.println("You opened a mine!!!");
 					boom=true;
 				}else if(cover[x][y]==-1){
