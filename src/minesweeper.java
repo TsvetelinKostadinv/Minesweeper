@@ -105,7 +105,6 @@ public class minesweeper {
 			System.out.println();
 		}
 	}
-
 	
 	public static void main(String[] arg)
 	{
@@ -116,12 +115,19 @@ public class minesweeper {
 		System.out.print("How high should it be:");
 		int rangeY = input.nextInt();
 
-		int[][] map = new int[rangeX][rangeY];
-		int[][] cover = new int[rangeX][rangeY];
+		int[][] map = new int[rangeX+2][rangeY+2];
+		int[][] cover = new int[rangeX+2][rangeY+2];
 		
+		int countMines = rangeX*rangeY/10;
 		boolean boom=false;
+		int counterMarks=0;
+		int markedMines=0;
+		
+
+		System.out.println("There are "+countMines+" mines(1/10 of the field)");
+		map = initializeMap(countMines, map);
+		
 		//for map
-		//-3 = marked
 		//-2 = border
 		//-1 = mine
 		//0 = empty
@@ -131,34 +137,30 @@ public class minesweeper {
 		//-1=marked
 		//0=hidden
 		//1=open
-		for(int i=0; i<map.length;i++)
+		
+		
+		for(int i=0; i<cover.length;i++)
 		{
-			for(int j=0; j<map[0].length;j++)
+			for(int j=0; j<cover[0].length;j++)
 			{
 				cover[i][j] = 0;
 			}
 		}
-		int countMines = rangeX*rangeY/10;
-		int markedMines=0;
-		int marks=0;
-		System.out.println("There are "+countMines+" mines(1/10 of the field)");
+		
 
-		map = initializeMap(countMines, map);
-		
-		
-		
 		while(!boom)
 		{
 			showMap(cover, map);
-			
+			System.out.println("You have "+(countMines+1)+" total marks");
+			System.out.println("You have "+((countMines+1)-counterMarks)+"  marks left");
 			System.out.print("What row is the cell in?");
-			int y=input.nextInt();
-			System.out.print("What colomn is the cell in?");
 			int x=input.nextInt();
-			System.out.println("This size includes the borders which are 1 cell on each side");
+			System.out.print("What colomn is the cell in?");
+			int y=input.nextInt();
 			System.out.println("What to do with it?");
 			System.out.println("[1]Open");
 			System.out.println("[2]Mark");
+			System.out.println("[3]End game");
 			int action=input.nextInt();
 			if(action == 1)
 			{
@@ -176,9 +178,40 @@ public class minesweeper {
 					System.out.println("Successfully opened");
 					cover[x][y]=1;
 				}
+			}else if(action == 2 )
+			{
+				if(cover[x][y] != 1)
+				{
+					if(map[x][y]!=-2)
+					{
+						if(counterMarks<countMines+1)
+						{
+							if(cover[x][y]==-1)
+							{
+								cover[x][y]=0;						
+							}else{
+								cover[x][y]=-1;	
+								if(map[x][y]==-1)
+								{
+									markedMines++;
+								}
+								counterMarks++;
+							}
+						}else{
+							System.out.println("You don't have marks left!");
+						}
+
+					}else{
+						System.out.println("You can't mark a border");
+					}
+				}else{
+					System.out.println("You can't mark it if it's open");
+				}
+				
+				
 			}
-		
 		}
+		showMap(cover, map);
 		
 	}
 }
