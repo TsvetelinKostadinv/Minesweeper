@@ -111,15 +111,22 @@ public class minesweeper {
 		}
 	}
 	
-	public static boolean isEmpty(int x, int y, int[][] map)
+	public static int[][] openEmptyAround(int x, int y, int[][] map, int[][] cover)
 	{
-		if(map[x][y]==0)
+		for(int i=-1;i<=1;i++)
 		{
-			return true;
-		}else{
-			return false;
+			for(int j=-1;j<=1;j++)
+			{
+				if(map[x+i][y+j]==0 && cover[x+i][y+j]==0)
+				{
+					cover[x+i][y+j]=1;
+					cover=openEmptyAround(x+i,y+j,map,cover);
+				}else{
+					continue;
+				}
+			}
 		}
-		
+		return cover;
 	}
 	
 
@@ -138,9 +145,9 @@ public class minesweeper {
 		}else{
 			cover[x][y]=1;
 			System.out.println("Successfully opened");
-			if(isEmpty(x, y, map))
+			if(map[x][y]==0)
 			{
-				//the logic for opening nearby!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				cover=openEmptyAround(x,y,map,cover);
 			}
 		}
 		
@@ -159,13 +166,13 @@ public class minesweeper {
 		int[][] map = new int[rangeY+2][rangeX+2];
 		int[][] cover = new int[rangeY+2][rangeX+2];
 		
-		int countMines = rangeX*rangeY/4;
+		int countMines = rangeX*rangeY/8;
 		boolean boom=false;
 		int counterMarks=0;
 		int markedMines=0;
 		
 
-		System.out.println("There are "+countMines+" mines(1/4 of the field)");
+		System.out.println("There are "+countMines+" mines(1/8 of the field)");
 		map = initializeMap(countMines, map);
 		
 		//for map
@@ -246,16 +253,18 @@ public class minesweeper {
 						cover[i][j] = 1;
 					}
 				}
+			}else{
+				System.out.println("No such function");
 			}
 			if(markedMines==countMines)
 			{
 				System.out.println("YOu marked all the mines!!");
 				boom=true;
 			}
-			if(cover[x][y]==1 && map[x][y]==-1)
-			{
-				boom=true;
-			}
+//			if(cover[x][y]==1 && map[x][y]==-1)
+//			{
+//				boom=true;
+//			}
 		}
 		showMap(cover, map);
 		
