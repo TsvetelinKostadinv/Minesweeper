@@ -166,13 +166,13 @@ public class minesweeper {
 		int[][] map = new int[rangeY+2][rangeX+2];
 		int[][] cover = new int[rangeY+2][rangeX+2];
 		
-		int countMines = rangeX*rangeY/8;
+		int countMines = Math.round(rangeX*rangeY/4);
 		boolean boom=false;
 		int counterMarks=0;
 		int markedMines=0;
 		
 
-		System.out.println("There are "+countMines+" mines(1/8 of the field)");
+		System.out.println("There are "+countMines+" mines(1/4 of the field)");
 		map = initializeMap(countMines, map);
 		
 		//for map
@@ -225,6 +225,10 @@ public class minesweeper {
 							{
 								cover[x][y]=0;	
 								counterMarks--;
+								if(map[x][y]==-1)
+								{
+									markedMines--;
+								}
 							}else{
 								cover[x][y]=-1;	
 								if(map[x][y]==-1)
@@ -261,10 +265,10 @@ public class minesweeper {
 				System.out.println("YOu marked all the mines!!");
 				boom=true;
 			}
-//			if(cover[x][y]==1 && map[x][y]==-1)
-//			{
-//				boom=true;
-//			}
+			if(cover[x][y]==1 && map[x][y]==-1)
+			{
+				boom=true;
+			}
 		}
 		showMap(cover, map);
 		
